@@ -2,7 +2,6 @@
 
 namespace App\Http\Requests\Auth;
 
-use App\Libs\ConfigUtil;
 use Illuminate\Foundation\Http\FormRequest;
 
 class LoginRequest extends FormRequest
@@ -23,24 +22,8 @@ class LoginRequest extends FormRequest
      */
     public function rules() {
         return [
-            'email' => [
-                'required',
-            ],
-            'password' => [
-                'required',
-            ],
-        ];
-    }
-
-    /**
-     * Validation error message
-     *
-     * @return array
-     */
-    public function messages() {
-        return [
-            'email.required' => ConfigUtil::getMessage('ECL001', ['Email']),
-            'password.required' => ConfigUtil::getMessage('ECL001', ['Password']),
+            'email' => getValidationRule('email'),
+            'password' => getValidationRule('password'),
         ];
     }
 }

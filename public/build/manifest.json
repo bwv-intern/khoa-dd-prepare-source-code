@@ -10,12 +10,12 @@
     "src": "resources/js/common.js"
   },
   "resources/js/lib/jquery-validation/additional-setting.js": {
-    "file": "assets/additional-setting-Qpmu4YCO.js",
+    "file": "assets/additional-setting-85tGi9GO.js",
     "isEntry": true,
     "src": "resources/js/lib/jquery-validation/additional-setting.js"
   },
   "resources/js/screens/auth/login.js": {
-    "file": "assets/login-OJhvnlpR.js",
+    "file": "assets/login-lIfjH_W-.js",
     "isEntry": true,
     "src": "resources/js/screens/auth/login.js"
   }

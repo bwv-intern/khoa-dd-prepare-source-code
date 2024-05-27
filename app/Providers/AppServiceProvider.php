@@ -2,7 +2,8 @@
 
 namespace App\Providers;
 
-use Illuminate\Support\ServiceProvider;
+use App\Extensions\Validation\SpecValidator;
+use Illuminate\Support\{ServiceProvider, Str, Stringable};
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -11,9 +12,7 @@ class AppServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function register()
-    {
-        //
+    public function register() {
     }
 
     /**
@@ -21,8 +20,11 @@ class AppServiceProvider extends ServiceProvider
      *
      * @return void
      */
-    public function boot()
-    {
-        //
+    public function boot() {
+        Str::macro('sentence', 'toSentenceCase');
+        Stringable::macro('sentence', function () {return new Stringable(toSentenceCase($this->value)); });
+        $this->app->make('validator')->resolver(function ($translator, $data, $rules, $messages, $params) {
+            return new SpecValidator($translator, $data, $rules, $messages, $params);
+        });
     }
 }
