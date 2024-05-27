@@ -44,8 +44,8 @@ class UserRepository extends BaseRepository
         if (!empty($params['user_id'])) {
             $query->where('id', $params['user_id']);
         }
-        if (!empty($params['user_flag'])) {
-            $query->whereIn('user_flag', $params['user_flag']);
+        if (!empty($params['user_flg'])) {
+            $query->whereIn('user_flg', $params['user_flg']);
         }
         if (!empty($params['name'])) {
             $query->where('name', 'like', '%' . $params['name'] . '%');

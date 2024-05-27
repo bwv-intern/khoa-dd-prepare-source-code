@@ -3,8 +3,10 @@
 namespace App\Models;
 
 use App\Traits\ObservantTrait;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Facades\Hash;
 
 class User extends Authenticatable
 {
@@ -44,4 +46,10 @@ class User extends Authenticatable
         'deleted_at',
         'deleted_by',
     ];
+
+    protected function password(): Attribute {
+        return Attribute::make(
+            set: fn (string $value) => Hash::make($value),
+        );
+    }
 }

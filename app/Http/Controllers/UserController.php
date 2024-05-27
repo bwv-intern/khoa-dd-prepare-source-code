@@ -33,7 +33,7 @@ class UserController extends Controller
      */
     public function handleUsr01(Request $request)
     {
-        $params = $request->only(['user_id', 'user_flag', 'name', 'email']);
+        $params = $request->only(['user_id', 'user_flg', 'name', 'email']);
         session()->forget('usr01.search');
         session()->put('usr01.search', $params);
         return to_route('user.usr01');

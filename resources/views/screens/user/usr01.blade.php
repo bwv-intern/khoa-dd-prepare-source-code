@@ -17,9 +17,9 @@
                             <div class="col-10">
                                 <x-forms.checkbox-group
                                     :label="null"
-                                    name="user_flag"
-                                    :options="getList('user.user_flag')"
-                                    :valueChecked="$paramSession['user_flag'] ?? null"
+                                    name="user_flg"
+                                    :options="getList('user.user_flg')"
+                                    :valueChecked="$paramSession['user_flg'] ?? null"
                                 />
                             </div>
                         </div>
@@ -76,7 +76,7 @@
                                         {{ $user->email }}
                                     </td>
                                     <td class="text-center text-wrap">
-                                        {{ getValueToText($user->user_flag ?? null, 'user.user_flag') }}
+                                        {{ getValueToText($user->user_flg ?? null, 'user.user_flg') }}
                                     </td>
                                     <td class="text-center text-wrap">
                                         {{ formatDate($user->created_at, 'Y/m/d H:i:s') }}

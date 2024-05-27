@@ -6,7 +6,7 @@ use Exception;
 use Illuminate\Support\Facades\File;
 use Log;
 
-class CSVHelpers
+class CSVHelper
 {
     /**
      * Read file csv by $filePath, compare if wrong header, and process csv file with $callback

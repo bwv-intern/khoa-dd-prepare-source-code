@@ -1,6 +1,9 @@
-user_flag:
-  1: ADMIN
-  2: DIRECTOR
-  3: GROUP_LEADER
-  4: LEADER
-  5: MEMBER
+user_flg:
+  0: ADMIN
+  1: USER
+  2: SUPPORT
+  # 1: ADMIN
+  # 2: DIRECTOR
+  # 3: GROUP_LEADER
+  # 4: LEADER
+  # 5: MEMBER
