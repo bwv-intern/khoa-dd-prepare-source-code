@@ -7,5 +7,3 @@ name_label_mappings:
   user_flg: User flag
   repeat_password: Re-password
   date_of_birth: Date of birth
-
-custom_validation_rule_marker: _

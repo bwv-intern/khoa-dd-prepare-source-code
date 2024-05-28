@@ -12,13 +12,15 @@ class AppLayout extends Component
      * @var string
      */
     public $title;
+    public $breadcrumbs;
 
     /**
      * Create a new component instance.
      */
-    public function __construct($title = '')
+    public function __construct($title = '', $breadcrumbs = [])
     {
         $this->title = $title;
+        $this->breadcrumbs = $breadcrumbs;
     }
 
     /**
