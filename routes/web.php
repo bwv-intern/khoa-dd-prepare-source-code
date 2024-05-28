@@ -32,12 +32,16 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
 });
 
-Route::middleware(['auth'])->prefix('admin')->group(function () {
-    Route::get('/', [TopController::class, 'index'])->name('top.index')->middleware(['nocache', 'authorize_user_flg:admin,support']);
-    Route::get('/user', [UserController::class, 'usr01'])->name('user.usr01')->middleware(['nocache', 'authorize_user_flg:admin']);
-    Route::post('/user/handleUsr01', [UserController::class, 'handleUsr01'])->name('user.handleUsr01')->middleware(['authorize_user_flg:admin']);
+Route::middleware(['auth'])->prefix('admin')->name('ADMIN_')->group(function () {
+    Route::get('/', [TopController::class, 'index'])->name('TOP')->middleware(['nocache', 'authorize_user_flg:admin,support']);
+    Route::get('/user', [UserController::class, 'viewAdminUserSearch'])->name('USER_SEARCH')->middleware(['nocache', 'authorize_user_flg:admin']);
+    Route::post('/user/submit-search', [UserController::class, 'submitAdminUserSearch'])->name('USER_SEARCH_SUBMIT')->middleware(['authorize_user_flg:admin']);
 
-    Route::prefix('common')->as('common.')->group(function () {
-        Route::get('resetSearch', [CommonController::class, 'resetSearch'])->name('resetSearch')->middleware(['authorize_user_flg:admin']);
+    Route::get('/user-delete/{id}', [UserController::class, 'submitAdminUserDelete'])->name('USER_DELETE')->middleware(['authorize_user_flg:admin']);
+
+    Route::prefix('common')->name('COMMON_')->group(function () {
+        Route::get('resetSearch', [CommonController::class, 'resetSearch'])->name('RESET_SEARCH')->middleware(['authorize_user_flg:admin']);
     });
+
+    Route::get('user-export', [UserController::class, 'exportAdminUser'])->name('USER_EXPORT')->middleware(['authorize_user_flg:admin']);
 });

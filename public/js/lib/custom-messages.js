@@ -30,10 +30,12 @@ jQuery.extend(jQuery.validator.messages, {
         }
         return $.validator.format(messages["E011"]);
     },
-    digits: function (param, field) { return $.validator.format(specMessages["E012"], "number") },
+    digits: function (param, field) { return $.validator.format(specMessages["E012"], $(field).data("label"), "number") },
     extension: function (param, field) { return $.validator.format(specMessages["E007"], param) },
     accept: function (param, field) { return $.validator.format(specMessages["E007"], param.split("/")[1]) },
     checkValidEmailRFC: function (param, field) { return $.validator.format(specMessages["E004"]); },
+    validDateDMY: function (param, field) { return $.validator.format(specMessages["E012"], $(field).data("label"), "date"); },
+    validDateYMD: function (param, field) { return $.validator.format(specMessages["E012"], $(field).data("label"), "date"); },
     // email: "Please enter your email address correctly.",
     // maxFileSize: "The file size limit {0} has been exceeded.",
     // fileExtension: "File extension is incorrect. Please use {0}.",

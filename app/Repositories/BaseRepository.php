@@ -3,27 +3,27 @@
 namespace App\Repositories;
 
 use App\Libs\ValueUtil;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Facades\Log;
-use Carbon\Carbon;
+use Exception;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\{DB, Log};
+use Throwable;
 
 abstract class BaseRepository
 {
     protected $model;
+
     protected $validDelFlg;
 
-    public function __construct()
-    {
+    public function __construct() {
         $this->setModel();
         $this->validDelFlg = ValueUtil::constToValue('common.del_flg.VALID');
     }
 
     abstract public function getModel();
 
-    public function setModel()
-    {
+    public function setModel() {
         $this->model = app()->make(
-            $this->getModel()
+            $this->getModel(),
         );
     }
 
@@ -38,12 +38,14 @@ abstract class BaseRepository
     public function findById($id, $isFindAll = false) {
         try {
             $query = $this->model->where($this->model->getKeyName(), $id);
-            if (!$isFindAll) {
+            if (! $isFindAll) {
                 $query->where('del_flg', ValueUtil::constToValue('common.del_flg.VALID'));
             }
+
             return $query->first();
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             Log::error($e);
+
             return false;
         }
     }
@@ -51,13 +53,13 @@ abstract class BaseRepository
     /**
      * Insert or update record if id exist, return true if success and false if not
      *
-     * @param null|int $id
+     * @param int|null $id
      * @param array $params
+     * @param mixed $isFindAll
      *
      * @return mixed
      */
-    public function save($id = null, $params, $isFindAll = false)
-    {
+    public function save($id = null, $params, $isFindAll = false) {
         try {
             DB::beginTransaction();
             if ($id) {
@@ -67,29 +69,29 @@ abstract class BaseRepository
             } else {
                 $result = $this->model->create($params);
             }
-            if (!$result){
+            if (! $result) {
                 DB::rollBack();
             }
             DB::commit();
+
             return $result;
-        } catch (\Throwable $th) {
+        } catch (Throwable $th) {
             Log::error($th);
             DB::rollBack();
+
             return false;
         }
-
     }
 
     /**
      * Insert or update multiple record if id exist, return true if success and false if not
      *
-     * @param null|array $ids
+     * @param array|null $ids
      * @param array $attributes
      *
      * @return mixed
      */
-    public function saveMany($ids = null, $attributes)
-    {
+    public function saveMany($ids = null, $attributes) {
         try {
             DB::beginTransaction();
             $models = [];
@@ -100,21 +102,44 @@ abstract class BaseRepository
                 if ($id) {
                     $model = $this->model->find($id);
                     $model = $model->update($attribute);
-                }
-                else {
+                } else {
                     $model = $this->model->save($attribute);
                 }
-                if (!$model){
+                if (! $model) {
                     DB::rollBack();
                 }
                 $models[] = $model;
             }
             DB::commit();
+
             return $models;
-        } catch (\Throwable $th) {
+        } catch (Throwable $th) {
             Log::error($th);
             DB::rollBack();
+
             return false;
+        }
+    }
+
+    /**
+     * Perform delete1 on a model
+     * @param mixed $id
+     */
+    public function delete1($id) {
+        try {
+            DB::beginTransaction();
+
+            $model = $this->findById($id);
+            if ($model === null) {
+                throw new ModelNotFoundException();
+            }
+            $model['del_flg'] = ValueUtil::constToValue('common.del_flg.INVALID');
+            $model->save();
+            DB::commit();
+        } catch (Throwable $th) {
+            Log::error($th);
+            DB::rollBack();
+            throw $th;
         }
     }
 }

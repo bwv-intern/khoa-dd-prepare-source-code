@@ -1,49 +1,55 @@
-<x-app-layout title="User List">
-    <form id="usr01-form" method="POST" action="{{ route('user.handleUsr01') }}">
+<x-app-layout title="User List" :breadcrumbs="['Top' => route('ADMIN_TOP'), 'Users' => route('ADMIN_USER_SEARCH')]">
+    <form id="usr01-form" method="POST"
+        action="{{ route('ADMIN_USER_SEARCH_SUBMIT') }}">
         @csrf
         <div class="card">
             <div class="card-body">
+                <div class="d-flex flex-row justify-content-between">
+                    <div>
+                        <h2><b>User search</b></h2>
+                    </div>
+                    <div>
+                        <x-button.link to="#" label="Add user" />
+                    </div>
+                </div>
                 <div class="row">
                     <div class="col-6">
-                        <x-forms.text-group
-                            label="ID"
-                            name="user_id"
-                            :value="$paramSession['user_id'] ?? null"
-                        />
+                        <x-forms.text-group label="Email" name="email"
+                            :value="$paramSession['email'] ?? old('email') ?? null" />
                     </div>
+                    <div class="col-6">
+                        <x-forms.text-group label="Full name" name="name"
+                            :value="$paramSession['name'] ?? old('name') ?? null" />
+                    </div>
+                </div>
+                <div class="row">
                     <div class="col-6">
                         <div class="input-group">
                             <label class="col-2">User Flag</label>
                             <div class="col-10">
-                                <x-forms.checkbox-group
-                                    :label="null"
-                                    name="user_flg"
-                                    :options="getList('user.user_flg')"
-                                    :valueChecked="$paramSession['user_flg'] ?? null"
-                                />
+                                <x-forms.checkbox-group :label="null"
+                                    name="user_flg" :options="getList('user.user_flg')"
+                                    :valueChecked="$paramSession['user_flg'] ?? old('user_flg') ??
+                                        null" />
                             </div>
                         </div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-6">
-                        <x-forms.text-group
-                            label="User Name"
-                            name="name"
-                            :value="$paramSession['name'] ?? null"
-                        />
+                        <x-forms.text-group label="Date of birth"
+                            name="date_of_birth" :value="$paramSession['date_of_birth'] ?? old('date_of_birth') ?? null" />
                     </div>
                     <div class="col-6">
-                        <x-forms.text-group
-                            label="Email"
-                            name="email"
-                            :value="$paramSession['email'] ?? null"
-                        />
+                        <x-forms.text-group label="Phone" name="phone"
+                            :value="$paramSession['phone'] ?? old('phone') ?? null" />
                     </div>
                 </div>
                 <div class="text-center">
                     <x-button.base label="Search" />
-                    <x-button.clear screen="usr01" />
+                    <x-button.clear screen="usr01" label="Clear" />
+                    <x-button.link label="Export" type="button" to="{{route('ADMIN_USER_EXPORT')}}" />
+                    <x-button.base label="Import" type="button" />
                 </div>
             </div>
         </div>
@@ -52,37 +58,48 @@
         @if ($users->isNotEmpty())
             <div class="card-body">
                 <div class="table-responsive table-hover">
-                    <table id="user-table" class="table table-bordered table-hover dataTable dtr-inline">
+                    <table id="user-table"
+                        class="table table-bordered table-hover dataTable dtr-inline">
                         <thead>
                             <tr>
-                                <th class="text-center">ID</th>
-                                <th class="text-center">User Name</th>
-                                <th class="text-center">Email</th>
-                                <th class="text-center">User Flag</th>
-                                <th class="text-center">Created At</th>
-                                <th class="text-center">Updated At</th>
+                                <th class="text-center op"></th>
+                                <th class="text-center email">Email</th>
+                                <th class="text-center name">Full name</th>
+                                <th class="text-center user-flag">User flag</th>
+                                <th class="text-center dob">Date of birth</th>
+                                <th class="text-center phone">Phone</th>
+                                <th class="text-center address">Address</th>
                             </tr>
                         </thead>
                         <tbody>
                             @foreach ($users as $user)
                                 <tr>
                                     <td class="text-center text-wrap">
-                                        {{ $user->id }}
-                                    </td>
-                                    <td class="text-center text-wrap">
-                                        {{ $user->name }}
+                                        <x-button.link to="#"
+                                            label="Edit" />
+                                        <x-button.base
+                                            class="btn btn-danger delete-user-btn"
+                                            label="Delete"
+                                            data-user-id="{{ $user->id }}"
+                                            data-link="{{ route('ADMIN_USER_DELETE', ['id' => $user->id]) }}" />
                                     </td>
                                     <td class="text-center text-wrap">
                                         {{ $user->email }}
                                     </td>
                                     <td class="text-center text-wrap">
-                                        {{ getValueToText($user->user_flg ?? null, 'user.user_flg') }}
+                                        {{ $user->name }}
                                     </td>
                                     <td class="text-center text-wrap">
-                                        {{ formatDate($user->created_at, 'Y/m/d H:i:s') }}
+                                        {{ ucfirst(getValueToText($user->user_flg ?? null, 'user.user_flg')) }}
                                     </td>
                                     <td class="text-center text-wrap">
-                                        {{ formatDate($user->updated_at, 'Y/m/d H:i:s') }}
+                                        {{ formatDate($user->date_of_birth, 'd/m/Y') }}
+                                    </td>
+                                    <td class="text-center text-wrap">
+                                        {{ $user->phone }}
+                                    </td>
+                                    <td class="text-center text-wrap">
+                                        {{ $user->address }}
                                     </td>
                                 </tr>
                             @endforeach
@@ -92,7 +109,13 @@
             </div>
             {{ $users->links('common.pagination') }}
         @else
-            <div class="text-center m-3">{{ getMessage('ICL015') }}</div>
+            <div class="text-center m-3">{{ getMessage('I005') }}</div>
         @endif
     </div>
+    @push('styles')
+        @vite(['resources/css/screens/admin/user/search.css'])
+    @endpush
+    @push('scripts')
+        @vite(['resources/js/screens/admin/user/search.js'], 'build')
+    @endpush
 </x-app-layout>

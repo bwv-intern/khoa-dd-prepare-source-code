@@ -134,4 +134,12 @@ $(function () {
             success: function (response) {}
         });
     });
+
+    $("#date-of-birth").datepicker({
+        dateFormat: 'dd/mm/yy'
+    });
+    
+    $("#calendar").click(function () {
+        $("#dob").datepicker("show");
+    })
 });

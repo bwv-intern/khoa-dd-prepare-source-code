@@ -4,6 +4,7 @@ namespace App\Repositories;
 
 use App\Repositories\BaseRepository;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Support\Facades\Hash;
 
 class UserRepository extends BaseRepository
@@ -41,8 +42,8 @@ class UserRepository extends BaseRepository
     {
         $query = User::whereRaw('1=1');
         $query->where('del_flg', $this->validDelFlg);
-        if (!empty($params['user_id'])) {
-            $query->where('id', $params['user_id']);
+        if (!empty($params['email'])) {
+            $query->where('email', $params['email']);
         }
         if (!empty($params['user_flg'])) {
             $query->whereIn('user_flg', $params['user_flg']);
@@ -50,8 +51,11 @@ class UserRepository extends BaseRepository
         if (!empty($params['name'])) {
             $query->where('name', 'like', '%' . $params['name'] . '%');
         }
-        if (!empty($params['email'])) {
-            $query->where('email', 'like', '%' . $params['email'] . '%');
+        if (!empty($params['date_of_birth'])) {
+            $query->where('date_of_birth', Carbon::createFromFormat('d/m/Y', $params['date_of_birth'])->format('Y/m/d'));
+        }
+        if (!empty($params['phone'])) {
+            $query->where('phone', $params['phone']);
         }
         $query->orderBy('id', 'desc');
 

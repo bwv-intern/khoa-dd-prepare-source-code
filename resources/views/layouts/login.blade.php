@@ -32,6 +32,8 @@
         'resources/js/common.js',
         'resources/js/lib/jquery-validation/additional-setting.js',
     ], 'build')
+    <script defer src="{{ asset('js/lib/custom-rules.js')}}"></script>
+    <script defer src="{{ asset('js/lib/custom-messages.js')}}"></script>
     @stack('scripts')
 </body>
 

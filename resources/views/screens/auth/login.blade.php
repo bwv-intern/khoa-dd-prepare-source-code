@@ -41,8 +41,6 @@
         </div>
     </div>
     @push('scripts')
-        <script defer src="{{ asset('js/lib/custom-rules.js')}}"></script>
-        <script defer src="{{ asset('js/lib/custom-messages.js')}}"></script>
         @vite(['resources/js/screens/auth/login.js'], 'build')
     @endpush
 </x-login-layout>

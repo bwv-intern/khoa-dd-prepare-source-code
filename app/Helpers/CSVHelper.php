@@ -2,9 +2,12 @@
 
 namespace App\Helpers;
 
+use Carbon\Carbon;
 use Exception;
-use Illuminate\Support\Facades\File;
-use Log;
+use Illuminate\Support\Facades\{File, Log};
+use RuntimeException;
+use Symfony\Component\Yaml\Yaml;
+use Throwable;
 
 class CSVHelper
 {
@@ -14,13 +17,13 @@ class CSVHelper
      * @param string $filePath
      * @param array $header
      * @param callback $callback
+     * @param mixed $callBack
      *
+     * @throws RuntimeException
      * @return void
-     * @throws \RuntimeException
      */
-    public static function readCSV($filePath, $header, $callBack)
-    {
-        if (!File::exists($filePath)) {
+    public static function readCSV($filePath, $header, $callBack) {
+        if (! File::exists($filePath)) {
             throw new Exception('File not found');
         }
 
@@ -32,7 +35,6 @@ class CSVHelper
 
         $firstRow = fgetcsv($fileHandle);
 
-
         if (array_diff_assoc($header, $firstRow)) {
             throw new Exception('Wrong header');
         }
@@ -41,8 +43,8 @@ class CSVHelper
         while (($row = fgetcsv($fileHandle)) !== false) {
             $callBack($lineNumber++, $row);
         }
-    
-        fclose($fileHandle);    
+
+        fclose($fileHandle);
     }
 
     /**
@@ -51,23 +53,72 @@ class CSVHelper
      * @param string $filePath
      * @param array $header
      * @param array $data
+     * @param mixed $rows
      *
      * @return bool
      */
-    public function exportCSV($filePath, $rows)
-    {
+    public static function exportCSV($filePath, string $exportType, $rows) {
         try {
             $file = fopen($filePath, 'w');
 
+            $exportConfigs = static::getExportConfigs($exportType);
+
+            $columns = $exportConfigs['columns'];
+            $formats = $exportConfigs['dt_formats'];
+
+            $header = array_values($columns);
+            $header = static::betterRowFormatter($header) . "\n";
+
+            // write header
+            fputs($file, $header);
+
+            // extract only relevant columns, format and write
             foreach ($rows as $row) {
-                fputcsv($file, $row);
+                $newRow = [];
+                foreach ($columns as $fieldName => $exportHeaderName) {
+                    $newRow[$fieldName] = $row[$fieldName];
+                }
+                foreach ($formats as $field => $format)
+                {
+                    $newRow[$field] = Carbon::parse($newRow[$field])->format($format);
+                }
+                fputs($file, static::betterRowFormatter($newRow) . "\n");
             }
 
             fclose($file);
+
             return true;
-        } catch (\Throwable $th) {
+        } catch (Throwable $th) {
             Log::error($th);
+
             return false;
         }
+    }
+
+    public static function betterRowFormatter(array $row): string {
+        foreach ($row as $key => $item) {
+            $item = str_replace('"', '""', $item);
+            $row[$key] = '"' . $item . '"';
+        }
+
+        return implode(',', $row);
+    }
+
+    public static function getPath() {
+        return __DIR__ . '/../' . 'Constant/' . 'Exports/';
+    }
+
+    public static function getExportConfigs(string $exportType) {
+        global $cache;
+
+        if (! isset($cache)) {
+            $cache = [];
+        }
+
+        if (!isset($cache[$exportType])) {
+            $filePath = static::getPath() . $exportType . '.yml';
+            $cache[$exportType] = Yaml::parseFile($filePath);
+        }
+        return $cache[$exportType];
     }
 }
