@@ -1,12 +1,12 @@
 <?php
 
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\{
     AuthController,
     CommonController,
     TopController,
     UserController
 };
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,16 +23,21 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::get('/login', [AuthController::class, 'login'])->name('login');
-Route::post('/login/handleLogin', [AuthController::class, 'handleLogin'])->name('auth.handleLogin');
-Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+Route::middleware(['guest'])->group(function () {
+    Route::get('/login', [AuthController::class, 'login'])->name('login')->middleware('nocache');
+    Route::post('/login/handleLogin', [AuthController::class, 'handleLogin'])->name('auth.handleLogin');
+});
 
 Route::middleware(['auth'])->group(function () {
-    Route::get('/', [TopController::class, 'index'])->name('top.index');
-    Route::get('/user', [UserController::class, 'usr01'])->name('user.usr01');
-    Route::post('/user/handleUsr01', [UserController::class, 'handleUsr01'])->name('user.handleUsr01');
+    Route::get('/logout', [AuthController::class, 'logout'])->name('logout');
+});
+
+Route::middleware(['auth'])->prefix('admin')->group(function () {
+    Route::get('/', [TopController::class, 'index'])->name('top.index')->middleware(['nocache', 'authorize_user_flg:admin,support']);
+    Route::get('/user', [UserController::class, 'usr01'])->name('user.usr01')->middleware(['nocache', 'authorize_user_flg:admin']);
+    Route::post('/user/handleUsr01', [UserController::class, 'handleUsr01'])->name('user.handleUsr01')->middleware(['authorize_user_flg:admin']);
 
     Route::prefix('common')->as('common.')->group(function () {
-        Route::get('resetSearch', [CommonController::class, 'resetSearch'])->name('resetSearch');
+        Route::get('resetSearch', [CommonController::class, 'resetSearch'])->name('resetSearch')->middleware(['authorize_user_flg:admin']);
     });
 });

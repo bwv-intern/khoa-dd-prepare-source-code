@@ -108,7 +108,7 @@ if (! function_exists('getSizeForValidation')) {
         if ($input instanceof UploadedFile) {
             return $input->getSize();
         }
-        if ($input instanceof string) {
+        else if (is_string($input)) {
             return mb_strlen($input);
         }
         // IMPROVE: add support for other compatible types

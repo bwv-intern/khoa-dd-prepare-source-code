@@ -2,13 +2,16 @@ id:
   - numeric
 email:
   - required
-  - email
+  - check_mail_rfc
   - max:50
 name:
   - required
   - max:50
 password:
   - required
+repeat_password:
+  - required
+  - same:password
 user_flg:
   - required
 date_of_birth:

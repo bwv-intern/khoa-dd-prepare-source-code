@@ -1,7 +1,10 @@
 user_flg:
-  0: ADMIN
-  1: USER
-  2: SUPPORT
+  0: admin|ADMIN
+  1: user|USER
+  2: support|SUPPORT
+  # 0: アドミン|ADMIN
+  # 1: ユーザー|USER
+  # 2: サポート|SUPPORT
   # 1: ADMIN
   # 2: DIRECTOR
   # 3: GROUP_LEADER

@@ -2,6 +2,7 @@
 
 namespace App\Libs;
 
+use Illuminate\Validation\ValidationRuleParser;
 use Symfony\Component\Yaml\Yaml;
 
 class ValidationUtil
@@ -14,22 +15,31 @@ class ValidationUtil
         return 'App\\Rules\\';
     }
 
+    /**
+     * Get validation rules defined in app\Constant\Validation\FILE.yml
+     *
+     * @param mixed $validationKey, should be in the form of "FILE.FIELD", FILE is assumed to be common if supplied with only "FIELD"
+     */
     public static function getValidationRule($validationKey) {
-        return static::innerGetValidationRule($validationKey);
+        $rules = static::innerGetValidationRule($validationKey);
+        foreach ($rules as $index => $rule) {
+            $rules[$index] = static::resolveRuleString($rule);
+        }
+
+        return $rules;
     }
 
-    public static function resolveStringRule(string $ruleString) {
-        $parts = explode(':', $ruleString);
-        if (is_array($parts) && count($parts) == 1) {
-            array_push($parts, '');
-        } else {
-            return $ruleString;
-        }
+    /**
+     * Parse a rule string, i.e. max:50 into either a concrete rule object
+     * if it is a custom rule, or preserve it otherwise
+     * @param string $ruleString
+     */
+    public static function resolveRuleString(string $ruleString) {
+        $parts = ValidationRuleParser::parse($ruleString);
         [$ruleName, $args] = $parts;
-        $args = explode(',', $args);
-        $fullCustomRuleClassName = static::getCustomRuleClassNamespace() . str($ruleName)->camel();
+        $fullCustomRuleClassName = static::getCustomRuleClassNamespace() . $ruleName;
         if (class_exists($fullCustomRuleClassName)) {
-            return app()->make($fullCustomRuleClassName, $args);
+            return new $fullCustomRuleClassName(...$args);
         }
 
         return $ruleString;

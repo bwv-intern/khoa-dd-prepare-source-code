@@ -37,7 +37,7 @@ class SpecValidator extends Validator
     protected function specMessages() {
         return [
             '*.required' => ConfigUtil::getMessage('E001', [':Field']),
-            'email.email' => ConfigUtil::getMessage('E004'),
+            '*.App\\Rules\\CheckMailRFC' => ConfigUtil::getMessage('E004'),
             '*_file.max' => ConfigUtil::getMessage('E006', [':max']),
             '*.max' => ConfigUtil::getMessage('E002', [':Field', ':max', ':size']),
             '*.max_digits' => ConfigUtil::getMessage('E002', [':Field', ':max', ':size']),
@@ -84,12 +84,12 @@ class SpecValidator extends Validator
         $nameLabelMappings = ConfigUtil::get('name_label_mappings');
         $value2 = Str::snake($value);
         if (array_key_exists($value2, $nameLabelMappings)) {
-            $attribute = $nameLabelMappings[$value2];
+            $value2 = $nameLabelMappings[$value2];
         }
 
         return str_replace(
             [':attribute', ':ATTRIBUTE', ':Attribute', ':Field'],
-            [$value, Str::upper($value), Str::ucfirst($value), Str::sentence($attribute)],
+            [$value, Str::upper($value), Str::ucfirst($value), Str::sentence($value2)],
             $message,
         );
     }
