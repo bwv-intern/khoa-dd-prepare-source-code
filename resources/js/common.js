@@ -39,8 +39,16 @@ $(function () {
     function showLoading(isShow = true) {
         if (isShow) {
             $('#loading').show();
+            // disable form submit
+            $(":enabled[type=submit]").prop("disabled", true).addClass("to-enable");
+            // force lose focus
+            $(":focus").blur();
+            // could also force untabbable
+            // $("*").prop("tabindex", -1);
         } else {
             $('#loading').hide();
+            // reenable whatever was disabled
+            $(".to-enable").prop("disabled", false).removeClass("to-enable");
         }
     }
     _common.showLoading = showLoading;

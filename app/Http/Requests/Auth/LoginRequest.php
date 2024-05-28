@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests\Auth;
 
+use App\Rules\CheckMailRFC;
 use Illuminate\Foundation\Http\FormRequest;
 
 class LoginRequest extends FormRequest
@@ -22,7 +23,7 @@ class LoginRequest extends FormRequest
      */
     public function rules() {
         return [
-            'email' => getValidationRule('email'),
+            'email' => ['required', new CheckMailRFC()],
             'password' => getValidationRule('password'),
         ];
     }

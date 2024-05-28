@@ -3,6 +3,7 @@ $(function() {
         rules: {
             email: {
                 required: true,
+                checkValidEmailRFC: true,
             },
             password: {
                 required: true,

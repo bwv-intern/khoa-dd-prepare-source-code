@@ -38,7 +38,7 @@ class AuthController extends Controller
             session()->regenerate();
             return redirect()->intended(route('top.index'));
         } else {
-            return redirect()->back()->withInput()->withErrors(ConfigUtil::getMessage('ECL019'));
+            return redirect()->back()->withInput()->withErrors(ConfigUtil::getMessage('E010'));
         }
     }
 
