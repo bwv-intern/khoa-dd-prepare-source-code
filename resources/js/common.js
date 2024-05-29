@@ -89,7 +89,7 @@ $(function () {
     $('.btn-clear-search').click(function () {
         var closestForm = $(this).closest('form');
         var radioElement = closestForm.find('.i-radio');
-        var dateElement = closestForm.find('.datepicker') ? closestForm.find('.date-month'): '';
+        var dateElement = closestForm.find('.datepicker') ? closestForm.find('.date-month') : '';
         closestForm.trigger('reset');
         closestForm.find('input:text, input:password, input:file, textarea').val('');
         closestForm.find('.i-radio, .i-checkbox').closest('div').removeClass('checked');
@@ -131,15 +131,15 @@ $(function () {
                 screen: $(this).data('screen'),
             },
             dataType: 'json',
-            success: function (response) {}
+            success: function (response) { }
         });
     });
 
     $("#date-of-birth").datepicker({
         dateFormat: 'dd/mm/yy'
     });
-    
-    $("#calendar").click(function () {
-        $("#dob").datepicker("show");
+
+    $("#date-of-birth-icon").click(function () {
+        $("#date-of-birth").datepicker("show");
     })
 });

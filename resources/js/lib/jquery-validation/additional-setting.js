@@ -123,11 +123,19 @@ $.validator.setDefaults({
         _common.showLoading();
         form.submit();
     },
-    errorPlacement: function(error, element) {
+    errorPlacement: function (error, element) {
         if ($(element).hasClass('chosen-select')) {
             $(element).parent('div').append(error);
         } else {
-            error.insertAfter(element);
+            // if an i tag is present and parent is a span
+            // then this likely has an icon dependent on the size of that span
+            // insert after the span to avoid misplacing the icon
+            if ($(element).siblings("i").length >= 1 && $(element).parent("span").length >= 1) {
+                error.insertAfter($(element).parent());
+            }
+            else {
+                error.insertAfter(element);
+            }
         }
     },
 });

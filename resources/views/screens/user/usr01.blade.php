@@ -15,11 +15,13 @@
                 <div class="row">
                     <div class="col-6">
                         <x-forms.text-group label="Email" name="email"
-                            :value="$paramSession['email'] ?? old('email') ?? null" />
+                            :value="$paramSession['email'] ??
+                                (old('email') ?? null)" />
                     </div>
                     <div class="col-6">
                         <x-forms.text-group label="Full name" name="name"
-                            :value="$paramSession['name'] ?? old('name') ?? null" />
+                            :value="$paramSession['name'] ??
+                                (old('name') ?? null)" />
                     </div>
                 </div>
                 <div class="row">
@@ -29,8 +31,8 @@
                             <div class="col-10">
                                 <x-forms.checkbox-group :label="null"
                                     name="user_flg" :options="getList('user.user_flg')"
-                                    :valueChecked="$paramSession['user_flg'] ?? old('user_flg') ??
-                                        null" />
+                                    :valueChecked="$paramSession['user_flg'] ??
+                                        (old('user_flg') ?? null)" />
                             </div>
                         </div>
                     </div>
@@ -38,17 +40,21 @@
                 <div class="row">
                     <div class="col-6">
                         <x-forms.text-group label="Date of birth"
-                            name="date_of_birth" :value="$paramSession['date_of_birth'] ?? old('date_of_birth') ?? null" />
+                            name="date_of_birth" :value="$paramSession['date_of_birth'] ??
+                                (old('date_of_birth') ?? null)"
+                            icon="fas fa-calendar" />
                     </div>
                     <div class="col-6">
                         <x-forms.text-group label="Phone" name="phone"
-                            :value="$paramSession['phone'] ?? old('phone') ?? null" />
+                            :value="$paramSession['phone'] ??
+                                (old('phone') ?? null)" />
                     </div>
                 </div>
                 <div class="text-center">
                     <x-button.base label="Search" />
                     <x-button.clear screen="usr01" label="Clear" />
-                    <x-button.link label="Export" type="button" to="{{route('ADMIN_USER_EXPORT')}}" />
+                    <x-button.link label="Export" type="button"
+                        to="{{ route('ADMIN_USER_EXPORT') }}" />
                     <x-button.base label="Import" type="button" />
                 </div>
             </div>
