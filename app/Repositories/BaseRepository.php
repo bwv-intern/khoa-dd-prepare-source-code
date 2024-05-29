@@ -65,7 +65,7 @@ abstract class BaseRepository
             if ($id) {
                 $result = $this->findById($id, $isFindAll);
                 $result->fill($params);
-                $result = $result->save($result);
+                $result = $result->save();
             } else {
                 $result = $this->model->create($params);
             }

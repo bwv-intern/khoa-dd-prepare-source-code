@@ -42,8 +42,8 @@
                     <div class="col-6">
                         <x-forms.text-group label="Date of birth"
                             name="date_of_birth" :value="$paramSession['date_of_birth'] ??
-                                (old('date_of_birth') ?? null)" placeholder="yyyy/mm/dd"
-                            icon="fas fa-calendar" />
+                                (old('date_of_birth') ?? null)"
+                            placeholder="yyyy/mm/dd" icon="fas fa-calendar" />
                     </div>
                     <div class="col-6">
                         <x-forms.text-group label="Phone" name="phone"
@@ -81,8 +81,9 @@
                         <tbody>
                             @foreach ($users as $user)
                                 <tr>
-                                    <td class="text-center text-wrap">
-                                        <x-button.link to="#"
+                                    <td class="text-center">
+                                        <x-button.link
+                                            to="{{ route('ADMIN_USER_EDIT', ['id' => $user->id]) }}"
                                             label="Edit" />
                                         <x-button.base
                                             class="btn btn-danger delete-user-btn"
@@ -90,22 +91,22 @@
                                             data-user-id="{{ $user->id }}"
                                             data-link="{{ route('ADMIN_USER_DELETE', ['id' => $user->id]) }}" />
                                     </td>
-                                    <td class="text-center text-wrap">
+                                    <td class="text-center text-wrap trim" title="{{$user->email}}">
                                         {{ $user->email }}
                                     </td>
-                                    <td class="text-center text-wrap">
+                                    <td class="text-center text-wrap trim" title="{{$user->name}}">
                                         {{ $user->name }}
                                     </td>
-                                    <td class="text-center text-wrap">
+                                    <td class="text-center text-wrap trim">
                                         {{ ucfirst(getValueToText($user->user_flg ?? null, 'user.user_flg')) }}
                                     </td>
-                                    <td class="text-center text-wrap">
+                                    <td class="text-center text-wrap trim">
                                         {{ formatDate($user->date_of_birth, 'd/m/Y') }}
                                     </td>
-                                    <td class="text-center text-wrap">
+                                    <td class="text-center text-wrap trim" title="{{$user->phone}}">
                                         {{ $user->phone }}
                                     </td>
-                                    <td class="text-center text-wrap">
+                                    <td class="text-center text-wrap trim" title="{{$user->address}}">
                                         {{ $user->address }}
                                     </td>
                                 </tr>

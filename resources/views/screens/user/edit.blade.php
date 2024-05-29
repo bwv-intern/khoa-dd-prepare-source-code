@@ -1,26 +1,26 @@
-<x-app-layout title="User add" :breadcrumbs="[
+<x-app-layout title="User edit" :breadcrumbs="[
     'Top' => route('ADMIN_TOP'),
     'Users' => route('ADMIN_USER_SEARCH'),
-    'User add' => route('ADMIN_USER_ADD'),
+    'User edit' => route('ADMIN_USER_EDIT_SUBMIT', ['id' => $user['id']]),
 ]">
     <form id="admin-user-add-form" method="POST"
-        action="{{ route('ADMIN_USER_ADD_SUBMIT') }}">
+        action="{{ route('ADMIN_USER_EDIT_SUBMIT', ['id' => $user['id']]) }}">
         @csrf
         <div class="card">
             <div class="card-body">
                 <div class="d-flex flex-row justify-content-between">
                     <div>
-                        <h2><b>User add</b></h2>
+                        <h2><b>User edit</b></h2>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-6">
                         <x-forms.text-group label="Email" name="email"
-                            :value="old('email') ?? null" />
+                            :value="old('email') ?? ($user['email'] ?? null)" />
                     </div>
                     <div class="col-6">
                         <x-forms.text-group label="Full name" name="name"
-                            :value="old('name') ?? null" />
+                            :value="old('name') ?? ($user['name'] ?? null)" />
                     </div>
                 </div>
                 <div class="row">
@@ -40,7 +40,8 @@
                             <div class="col-10">
                                 <x-forms.select-group label="User flag"
                                     name="user_flg" :options="getList('user.user_flg')"
-                                    :initialSelect="old('user_flg') ?? 1" />
+                                    :initialSelect="old('user_flg') ??
+                                        ($user['user_flg'] ?? 1)" />
                             </div>
                         </div>
                     </div>
@@ -60,22 +61,23 @@
                             }
                         @endphp
                         <x-forms.text-group label="Date of birth"
-                            name="date_of_birth" :value="old('date_of_birth')"
+                            name="date_of_birth" :value="$dob"
                             placeholder="yyyy/mm/dd" icon="fas fa-calendar" />
                     </div>
                     <div class="col-6">
                         <x-forms.text-group label="Phone" name="phone"
-                            :value="old('phone') ?? null" />
+                            :value="old('phone') ?? ($user['phone'] ?? null)" />
                     </div>
                 </div>
                 <div class="row">
                     <div class="col-6">
                         <x-forms.textarea label="Address" name="address"
-                            :value="old('address') ?? null" />
+                            :value="old('address') ??
+                                ($user['address'] ?? null)" />
                     </div>
                 </div>
                 <div class="text-center">
-                    <x-button.base label="Add" />
+                    <x-button.base label="Update" />
                 </div>
             </div>
         </div>

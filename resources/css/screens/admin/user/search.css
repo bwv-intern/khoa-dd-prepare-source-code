@@ -1,6 +1,29 @@
+table {
+    width: 100%;
+    table-layout: fixed;
+}
+
+.table td {
+    vertical-align: middle;
+    line-height: 2.5rem;
+    height: 5rem; 
+    max-height: 5rem;
+}
+
+.trim {
+    word-wrap: break-word;
+    text-overflow: ellipsis;
+    overflow: hidden;
+    /* text-wrap: wrap; */
+    text-overflow: ellipsis;
+    overflow-wrap: break-word;
+    white-space: nowrap !important;
+}
+
 .op {
     width: 16%;
     max-width: 16%;
+    white-space: nowrap;
 }
 
 .email {
@@ -14,13 +37,13 @@
 }
 
 .user-flag {
-    width: 7.5%;
-    max-width: 7.5%;
+    width: 10%;
+    max-width: 10%;
 }
 
 .dob {
-    width: 13%;
-    max-width: 13%;
+    width: 10.5%;
+    max-width: 10.5%;
 }
 
 .phone {

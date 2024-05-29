@@ -52,4 +52,9 @@ Route::middleware(['auth', 'authorize_user_flg:admin'])->prefix('admin')->name('
         ->middleware(['nocache']);
     Route::post('/user/submit-add', [UserController::class, 'submitAdminUserAdd'])->name('USER_ADD_SUBMIT')
         ->middleware(['nocache']);
+
+    Route::get('/user/edit/{id}', [UserController::class, 'viewAdminUserEdit'])->name('USER_EDIT')
+        ->middleware(['nocache']);
+    Route::post('/user/submit-edit/{id}', [UserController::class, 'submitAdminUserEdit'])->name('USER_EDIT_SUBMIT')
+        ->middleware(['nocache']);
 });

@@ -120,6 +120,8 @@ $(function () {
             }
         });
 
+        showLoading(true);
+
         $('form').valid();
         $.ajax({
             headers: {
@@ -131,7 +133,8 @@ $(function () {
                 screen: $(this).data('screen'),
             },
             dataType: 'json',
-            success: function (response) { }
+            success: function (response) { },
+            complete: function () { showLoading(false); },
         });
     });
 });

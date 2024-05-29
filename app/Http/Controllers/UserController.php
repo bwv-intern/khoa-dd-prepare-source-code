@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\CSVHelper;
-use App\Http\Requests\User\{AddRequest, DeleteRequest, SearchRequest};
+use App\Http\Requests\User\{AddRequest, DeleteRequest, EditRequest, SearchRequest};
 use App\Repositories\UserRepository;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\{Request};
@@ -86,6 +86,26 @@ class UserController extends Controller
     public function submitAdminUserAdd(AddRequest $request) {
         $addParams = $request->only(['email', 'name', 'password', 'user_flg', 'date_of_birth', 'phone', 'address']);
         if ($this->userRepository->save(null, $addParams)) {
+            Session::flash('success', getMessage('I013'));
+
+            return to_route('ADMIN_USER_SEARCH');
+        }
+
+        return redirect()->back()->withInput()->withErrors(getMessage('E014'));
+    }
+
+    public function viewAdminUserEdit(Request $request, int $id) {
+        $user = $this->userRepository->findById($id);
+        if ($user === null) {
+            throw new NotFoundHttpException();
+        }
+
+        return view('screens.user.edit', compact('user'));
+    }
+
+    public function submitAdminUserEdit(EditRequest $request, int $id) {
+        $editParams = $request->only(['email', 'name', 'password', 'user_flg', 'date_of_birth', 'phone', 'address']);
+        if ($this->userRepository->save($id, $editParams)) {
             Session::flash('success', getMessage('I013'));
 
             return to_route('ADMIN_USER_SEARCH');
