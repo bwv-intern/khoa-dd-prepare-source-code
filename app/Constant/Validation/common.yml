@@ -14,5 +14,13 @@ repeat_password:
   - same:password
 user_flg:
   - required
+  - check_in_value_list:user.user_flg
 date_of_birth:
+  - nullable
   - date_format:Y/m/d
+phone:
+  - nullable
+  - numeric
+  - max_digits:20
+address:
+  - nullable

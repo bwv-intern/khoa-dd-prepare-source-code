@@ -14,12 +14,12 @@ class CreateProductTable extends Migration
      */
     public function up(): void {
         Schema::create('products', function (Blueprint $table) {
-            $table->id();
-            $table->string('name', 100);
-            $table->decimal('price', 15, 4)->default('0.0000');
-            $table->text('content');
+            $table->id()->nullable(false);
+            $table->string('name', 100)->nullable(false);
+            $table->decimal('price', 15, 4)->default('0.0000')->nullable(false);
+            $table->text('content')->nullable(false);
             $table->string('image_path', 50)->nullable();
-            $table->tinyInteger('featured_flg')->default(0);
+            $table->tinyInteger('featured_flg')->default(0)->nullable(false);
             $table->integer('viewed')->default(0)->nullable();
             $table->integer('ordered')->default(0)->nullable();
             $this->commonColumns($table);

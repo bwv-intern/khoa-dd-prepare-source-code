@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Carbon\Carbon;
 use Illuminate\Foundation\Http\FormRequest;
 
 abstract class AdminOnlyRequest extends FormRequest
@@ -14,4 +15,6 @@ abstract class AdminOnlyRequest extends FormRequest
     public function authorize() {
         return $this->user()['user_flg'] == getConstToValue('user.user_flg.ADMIN');
     }
+
+    protected $stopOnFirstFailure = true;
 }

@@ -44,8 +44,9 @@ class SpecValidator extends Validator
             '*.min' => ConfigUtil::getMessage('E003', [':Field', ':min', ':size']),
             '*.numeric' => ConfigUtil::getMessage('E012', [':Field', 'number']),
             '*.date_format' => ConfigUtil::getMessage('E012', [':Field', 'date']),
-            're_password.same' => ConfigUtil::getMessage('E011'),
+            'repeat_password.same' => ConfigUtil::getMessage('E011'),
             '*.extensions' => ConfigUtil::getMessage('E007', [':values']),
+            'email.unique' => ConfigUtil::getMessage('E009', [':Field']),
         ];
     }
 

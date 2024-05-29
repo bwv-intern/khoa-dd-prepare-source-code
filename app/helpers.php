@@ -83,8 +83,8 @@ if (! function_exists('getValidationRule')) {
      * Shorthand function to get validation rule
      * @param mixed $validationKey
      */
-    function getValidationRule($validationKey) {
-        return ValidationUtil::getValidationRule($validationKey);
+    function getValidationRule($validationKey, $bail = true, $mergeRules = []) {
+        return array_merge($bail? ['bail'] : [], ValidationUtil::getValidationRule($validationKey), $mergeRules);
     }
 }
 

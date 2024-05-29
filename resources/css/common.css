@@ -85,13 +85,22 @@
     }
 }
 
+/* span grouping an input or whatever with an i, used to keep i's positioning relative to the input
+ * when only that input (and obviously the i) occupies the span, thus dictating its sizes
+ */
 span.groupIcon {
     position: relative;
 }
 
+/* the i in question, positioned absolute to the nearest relative element, being the span above
+ */
 span.groupIcon i {
     position: absolute;
     top: 50%;
     right: 4%;
-    transform: translate(0, -50%)
+    transform: translate(0, -50%);
+}
+
+textarea.no-resize {
+    resize: none;
 }

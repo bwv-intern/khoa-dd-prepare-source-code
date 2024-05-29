@@ -28,7 +28,7 @@ jQuery.extend(jQuery.validator.messages, {
         if ($(field).data("label") != "Re-password") {
             return "Please enter the same value again.";
         }
-        return $.validator.format(messages["E011"]);
+        return $.validator.format(specMessages["E011"]);
     },
     digits: function (param, field) { return $.validator.format(specMessages["E012"], $(field).data("label"), "number") },
     extension: function (param, field) { return $.validator.format(specMessages["E007"], param) },

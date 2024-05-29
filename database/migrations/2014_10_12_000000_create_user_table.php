@@ -21,9 +21,9 @@ class CreateUserTable extends Migration
             $table->string('password', 255)->nullable(false);
             $table->string('name', 50)->nullable(false);
             $table->tinyInteger('user_flg')->nullable(false)->default(1);
-            $table->date('date_of_birth');
-            $table->string('phone', 20);
-            $table->text('address');
+            $table->date('date_of_birth')->nullable();
+            $table->string('phone', 20)->nullable();
+            $table->text('address')->nullable();
             $this->commonColumns($table);
             $this->commonCharset($table);
         });

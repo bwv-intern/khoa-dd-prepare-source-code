@@ -1,4 +1,4 @@
-<x-app-layout title="User List" :breadcrumbs="['Top' => route('ADMIN_TOP'), 'Users' => route('ADMIN_USER_SEARCH')]">
+<x-app-layout title="User search" :breadcrumbs="['Top' => route('ADMIN_TOP'), 'Users' => route('ADMIN_USER_SEARCH')]">
     <form id="usr01-form" method="POST"
         action="{{ route('ADMIN_USER_SEARCH_SUBMIT') }}">
         @csrf
@@ -9,7 +9,8 @@
                         <h2><b>User search</b></h2>
                     </div>
                     <div>
-                        <x-button.link to="#" label="Add user" />
+                        <x-button.link to="{{ route('ADMIN_USER_ADD') }}"
+                            label="Add user" />
                     </div>
                 </div>
                 <div class="row">
@@ -41,7 +42,7 @@
                     <div class="col-6">
                         <x-forms.text-group label="Date of birth"
                             name="date_of_birth" :value="$paramSession['date_of_birth'] ??
-                                (old('date_of_birth') ?? null)"
+                                (old('date_of_birth') ?? null)" placeholder="yyyy/mm/dd"
                             icon="fas fa-calendar" />
                     </div>
                     <div class="col-6">
