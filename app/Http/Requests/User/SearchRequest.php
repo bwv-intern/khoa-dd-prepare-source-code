@@ -3,13 +3,11 @@
 namespace App\Http\Requests\User;
 
 use App\Http\Requests\AdminOnlyRequest;
-use App\Libs\ValueUtil;
-use App\Rules\CheckInValueList;
-use App\Rules\CheckMailRFC;
+use App\Rules\{CheckInValueList, CheckMailRFC};
 
-class SearchRequest extends AdminOnlyRequest {
-    public function rules()
-    {
+class SearchRequest extends AdminOnlyRequest
+{
+    public function rules() {
         return [
             'email' => ['nullable', new CheckMailRFC()],
             'name' => ['nullable'],

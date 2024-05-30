@@ -3,12 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\CSVHelper;
-use App\Http\Requests\User\{AddRequest, DeleteRequest, EditRequest, ImportRequest, SearchRequest};
+use App\Http\Requests\User\{AddRequest, DeleteRequest, EditRequest, ExportRequest, ImportRequest, SearchRequest};
 use App\Repositories\UserRepository;
 use App\Services\AdminService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\{Request};
-use Illuminate\Support\Facades\{Session};
+use Illuminate\Support\Facades\{Route, Session};
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
 
@@ -67,7 +67,7 @@ class UserController extends Controller
      * Export current user search query into csv and download
      * @param SearchRequest $request
      */
-    public function exportAdminUser(SearchRequest $request) {
+    public function exportAdminUser(ExportRequest $request) {
         $params = session()->get('usr01.search') ?? [];
         $query = $this->userRepository->search($params);
         $users = $query->get()->toArray();
@@ -75,7 +75,7 @@ class UserController extends Controller
         $fileName = 'export.csv';
         $filePath = storage_path('admin_user_search_export_' . Session::getId() . '.csv');
 
-        CSVHelper::exportCSV($filePath, 'admin_user_search_export', $users);
+        CSVHelper::exportCSV($filePath, $request->getExportType(), $users);
 
         return response()->download($filePath, $fileName)->deleteFileAfterSend();
     }
