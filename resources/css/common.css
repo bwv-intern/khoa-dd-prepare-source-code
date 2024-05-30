@@ -104,3 +104,7 @@ span.groupIcon i {
 textarea.no-resize {
     resize: none;
 }
+
+.menu-item-active {
+    color: teal !important
+}

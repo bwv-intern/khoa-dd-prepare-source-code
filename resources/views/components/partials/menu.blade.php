@@ -25,14 +25,22 @@
                     @foreach ($menuItems as $label => $routeName)
                         @php
                             $shouldShow = false;
+                            $inRouteGroup = false;
                             try {
                                 // trycatch error-prone ops while prepping essentials
                                 try {
+                                    $currentRoutePrefix = Route::getCurrentRoute()->getPrefix();
                                     $url = route($routeName);
                                     $userFlag = request()->user()?->user_flg;
                                     $route = Route::getRoutes()->getRoutesByName()[
                                         $routeName
                                     ];
+                                    $groupRoutePrefix =
+                                        $route?->getPrefix() ?? '\\\\\\\\';
+                                    $inRouteGroup = str_starts_with(
+                                        $currentRoutePrefix,
+                                        $groupRoutePrefix,
+                                    );
                                     $middlewares = $route?->middleware() ?? [];
                                     $authOnFlagsMiddleware = collect(
                                         array_filter($middlewares, function (
@@ -46,7 +54,8 @@
                                     )->first();
                                 } catch (\Throwable $th) {
                                     $url = $routeName;
-                                    $authOnFlagsMiddleware = 'authorize_user_flg:';
+                                    $authOnFlagsMiddleware =
+                                        'authorize_user_flg:';
                                 }
                                 // at this point we have "authorize_user_flg:...", split the :, get the second half
                                 $authorizedFlagsString = explode(
@@ -76,17 +85,21 @@
                                         $shouldShow = false;
                                     }
                                 }
-                            // fallback show by default
+                                // fallback show by default
                             } catch (\Throwable $th) {
                                 $shouldShow = true;
                             }
+                            $class = 'nav-link menu-item';
+                            if ($inRouteGroup) {
+                                $class .= '-active';
+                            }
                         @endphp
                         @if ($shouldShow)
-                        <x-nav-link to="{{ $url }}" class="nav-link"
-                            :id="'nav-link-' . strtolower($label)">
-                            <i class="nav-icon fas fa-file"></i>
-                            <p>{{ $label }}</p>
-                        </x-nav-link>
+                            <x-nav-link to="{{ $url }}"
+                                class="{{ $class }}" :id="'nav-link-' . strtolower($label)">
+                                <i class="nav-icon fas fa-file"></i>
+                                <p>{{ $label }}</p>
+                            </x-nav-link>
                         @endif
                     @endforeach
                 </li>
