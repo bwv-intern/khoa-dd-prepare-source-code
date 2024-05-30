@@ -56,19 +56,22 @@
                     <x-button.clear screen="usr01" label="Clear" />
                     <x-button.link label="Export" type="button"
                         to="{{ route('ADMIN_USER_EXPORT') }}" />
-                    <x-button.base id="import-btn" label="Import" type="button" />
+                    <x-button.base id="import-btn" label="Import"
+                        type="button" />
                 </div>
                 <div class="text-center" id="import-error-box"></div>
             </div>
         </div>
     </form>
     <div hidden>
-        <form id="admin-user-import-form" action="{{ route('ADMIN_USER_IMPORT_SUBMIT') }}" method="post"
+        <form id="admin-user-import-form"
+            action="{{ route('ADMIN_USER_IMPORT_SUBMIT') }}" method="post"
             enctype="multipart/form-data">
             @csrf
             <label for="Import file">Import user from .csv</label>
             <span>
-                <input type="file" name="import_file" data-label="Import file" id="import-file" accept="text/csv">
+                <input type="file" name="import_file"
+                    data-label="Import file" id="import-file" accept="text/csv">
             </span>
             <div class="errBox"></div>
             <input type="submit" value="Import">
@@ -76,6 +79,7 @@
     </div>
     <div class="card">
         @if ($users->isNotEmpty())
+        {{ $users->links('common.pagination') }}
             <div class="card-body">
                 <div class="table-responsive table-hover">
                     <table id="user-table"
@@ -98,17 +102,18 @@
                                         <x-button.link
                                             to="{{ route('ADMIN_USER_EDIT', ['id' => $user->id]) }}"
                                             label="Edit" />
-                                        <x-button.base
-                                            type="button"
+                                        <x-button.base type="button"
                                             class="btn btn-danger delete-user-btn"
                                             label="Delete"
                                             data-user-id="{{ $user->id }}"
                                             data-link="{{ route('ADMIN_USER_DELETE', ['id' => $user->id]) }}" />
                                     </td>
-                                    <td class="text-center text-wrap trim" title="{{$user->email}}">
+                                    <td class="text-center text-wrap trim"
+                                        title="{{ $user->email }}">
                                         {{ $user->email }}
                                     </td>
-                                    <td class="text-center text-wrap trim" title="{{$user->name}}">
+                                    <td class="text-center text-wrap trim"
+                                        title="{{ $user->name }}">
                                         {{ $user->name }}
                                     </td>
                                     <td class="text-center text-wrap trim">
@@ -117,10 +122,12 @@
                                     <td class="text-center text-wrap trim">
                                         {{ formatDate($user->date_of_birth, 'd/m/Y') }}
                                     </td>
-                                    <td class="text-center text-wrap trim" title="{{$user->phone}}">
+                                    <td class="text-center text-wrap trim"
+                                        title="{{ $user->phone }}">
                                         {{ $user->phone }}
                                     </td>
-                                    <td class="text-center text-wrap trim" title="{{$user->address}}">
+                                    <td class="text-center text-wrap trim"
+                                        title="{{ $user->address }}">
                                         {{ $user->address }}
                                     </td>
                                 </tr>
@@ -129,7 +136,6 @@
                     </table>
                 </div>
             </div>
-            {{ $users->links('common.pagination') }}
         @else
             <div class="text-center m-3">{{ getMessage('I005') }}</div>
         @endif
