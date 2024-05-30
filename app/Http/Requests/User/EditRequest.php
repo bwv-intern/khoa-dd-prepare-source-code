@@ -5,10 +5,14 @@ namespace App\Http\Requests\User;
 use App\Http\Requests\AdminOnlyRequest;
 use Illuminate\Validation\Rule;
 
+/**
+ * Validate incoming ADMIN_USER_EDIT submit request
+ */
 class EditRequest extends AdminOnlyRequest
 {
     public function rules() {
         $userId = $this->route('id');
+
         return [
             'email' => getValidationRule('user.email', mergeRules: [Rule::unique('user', 'email')->ignore($userId)]),
             'name' => getValidationRule('user.name'),

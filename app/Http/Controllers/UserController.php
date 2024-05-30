@@ -22,7 +22,7 @@ class UserController extends Controller
     }
 
     /**
-     * Render user01 page
+     * Render ADMIN_USER_SEARCH page
      * @param Request $request
      */
     public function viewAdminUserSearch(SearchRequest $request) {
@@ -36,7 +36,7 @@ class UserController extends Controller
     }
 
     /**
-     * Handle user01 page
+     * Handle ADMIN_USER_SEARCH search form submit
      * @param Request $request
      */
     public function submitAdminUserSearch(SearchRequest $request) {
@@ -83,10 +83,17 @@ class UserController extends Controller
         return response()->download($filePath, $fileName)->deleteFileAfterSend();
     }
 
+    /**
+     * Render ADMIN_USER_ADD screen
+     */
     public function viewAdminUserAdd() {
         return view('screens.user.add');
     }
 
+    /**
+     * Handle ADMIN_USER_ADD add form submit
+     * @param AddRequest $request
+     */
     public function submitAdminUserAdd(AddRequest $request) {
         $addParams = $request->only(['email', 'name', 'password', 'user_flg', 'date_of_birth', 'phone', 'address']);
         if ($this->userRepository->save(null, $addParams)) {
@@ -98,6 +105,11 @@ class UserController extends Controller
         return redirect()->back()->withInput()->withErrors(getMessage('E014'));
     }
 
+    /**
+     * Render ADMIN_USER_EDIT screen
+     * @param Request $request
+     * @param int $id
+     */
     public function viewAdminUserEdit(Request $request, int $id) {
         $user = $this->userRepository->findById($id);
         if ($user === null) {
@@ -107,6 +119,11 @@ class UserController extends Controller
         return view('screens.user.edit', compact('user'));
     }
 
+    /**
+     * Handle ADMIN_USER_EDIT edit form submit
+     * @param EditRequest $request
+     * @param int $id
+     */
     public function submitAdminUserEdit(EditRequest $request, int $id) {
         $editParams = $request->only(['email', 'name', 'password', 'user_flg', 'date_of_birth', 'phone', 'address']);
         if ($this->userRepository->save($id, $editParams)) {
@@ -118,6 +135,10 @@ class UserController extends Controller
         return redirect()->back()->withInput()->withErrors(getMessage('E014'));
     }
 
+    /**
+     * Handle ADMIN_USER_SEARCH csv import
+     * @param ImportRequest $request
+     */
     public function submitAdminUserImport(ImportRequest $request) {
         $this->adminService->import($request);
 

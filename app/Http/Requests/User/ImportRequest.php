@@ -6,6 +6,9 @@ use App\Extensions\Interfaces\IImportRequest;
 use App\Http\Requests\AdminOnlyRequest;
 use App\Rules\CheckCSVMime;
 
+/**
+ * Validate an incoming csv import request
+ */
 class ImportRequest extends AdminOnlyRequest implements IImportRequest
 {
     /**
@@ -19,8 +22,7 @@ class ImportRequest extends AdminOnlyRequest implements IImportRequest
         ];
     }
 
-    public function getImportType(): string
-    {
+    public function getImportType(): string {
         return 'admin_user_import';
     }
 }

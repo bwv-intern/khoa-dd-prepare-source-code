@@ -5,12 +5,22 @@ namespace App\Libs;
 use Illuminate\Validation\ValidationRuleParser;
 use Symfony\Component\Yaml\Yaml;
 
+/**
+ * Validation utilities class used to retrieve preconfigured
+ * validation rules on common fields
+ */
 class ValidationUtil
 {
+    /**
+     * Store the validation config path
+     */
     public static function getPath() {
         return __DIR__ . '/../' . 'Constant/' . 'Validation/';
     }
 
+    /**
+     * Get the known common namepsace of custom rules
+     */
     public static function getCustomRuleClassNamespace() {
         return 'App\\Rules\\';
     }
@@ -45,6 +55,10 @@ class ValidationUtil
         return $ruleString;
     }
 
+    /**
+     * Parse yaml and handle internal caching
+     * @param mixed $validationKey
+     */
     private static function innerGetValidationRule($validationKey) {
         global $validationFileCache;
         global $validationKeyCache;

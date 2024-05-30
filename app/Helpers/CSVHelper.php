@@ -96,6 +96,11 @@ class CSVHelper
         }
     }
 
+    /**
+     * Format array into csv strings, wrapping everything in dquote,
+     * escaping present dquotes
+     * @param array $row
+     */
     public static function betterRowFormatter(array $row): string {
         foreach ($row as $key => $item) {
             $item = str_replace('"', '""', $item);
@@ -105,6 +110,11 @@ class CSVHelper
         return implode(',', $row);
     }
 
+    /**
+     * Get export configuration including a column to header mapping
+     * and format strings for date time columns for an export type
+     * @param string $exportType
+     */
     public static function getExportConfigs(string $exportType) {
         global $cache;
 
@@ -120,6 +130,10 @@ class CSVHelper
         return $cache[$exportType];
     }
 
+    /**
+     * Get a complete validation rules array for an import type
+     * @param string $importType
+     */
     public static function getImportValidationRules(string $importType) {
         global $importRuleCache;
 
@@ -138,6 +152,10 @@ class CSVHelper
         return $importRuleCache[$importType];
     }
 
+    /**
+     * Get the mappings between header columns and real db columns for an import type
+     * @param string $importType
+     */
     public static function getImportMappings(string $importType) {
         global $importMapCache;
 
@@ -157,14 +175,25 @@ class CSVHelper
         return $importMapCache[$importType];
     }
 
+    /**
+     * Store the export config path
+     */
     private static function getExportConfigPath() {
         return __DIR__ . '/../' . 'Constant/' . 'Exports/';
     }
 
+    /**
+     * Store the import config path
+     */
     private static function getImportConfigPath() {
         return __DIR__ . '/../' . 'Constant/' . 'Imports/';
     }
 
+    /**
+     * Get the basic import configurations for an import type,
+     * containing header column and a corresponding validation key
+     * @param string $importType
+     */
     private static function getImportConfigsRaw(string $importType) {
         global $importCache;
 

@@ -10,12 +10,13 @@ use Symfony\Component\HttpFoundation\Response;
 class AuthorizeUserFlag
 {
     /**
-     * Handle an incoming request.
+     * Authorize a user against a set of user flags
      *
-     * @param  \Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response)  $next
+     * @param Closure(\Illuminate\Http\Request): (\Symfony\Component\HttpFoundation\Response) $next
+     * @param Request $request
+     * @param array $params
      */
-    public function handle(Request $request, Closure $next, ...$params): Response
-    {
+    public function handle(Request $request, Closure $next, ...$params): Response {
         $user = $request->user();
         if ($user === null) {
             throw new AuthorizationException();

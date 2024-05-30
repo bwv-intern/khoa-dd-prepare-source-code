@@ -2,14 +2,16 @@
 
 namespace App\Rules;
 
-use App\Libs\ConfigUtil;
-use App\Libs\ValueUtil;
+use App\Libs\{ConfigUtil, ValueUtil};
 use Illuminate\Contracts\Validation\{Rule};
 
+/**
+ * Check value or array of values is in a value list
+ */
 class CheckInValueList implements Rule
 {
     /**
-     * Check value or array of values is in a value list
+     * Construct a new instance
      *
      * @param string $valueListKey
      * @return void
@@ -50,6 +52,7 @@ class CheckInValueList implements Rule
      */
     public function message() {
         $spaceSeparatedValues = implode(', ', ValueUtil::getValues($this->valueListKey));
+
         return ConfigUtil::getMessage('E012', [':Field', $spaceSeparatedValues]);
     }
 }

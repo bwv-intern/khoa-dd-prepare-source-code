@@ -4,6 +4,9 @@ namespace App\Http\Requests\User;
 
 use App\Http\Requests\AdminOnlyRequest;
 
+/**
+ * Validate incoming ADMIN_USER_ADD submit request
+ */
 class AddRequest extends AdminOnlyRequest
 {
     public function rules() {

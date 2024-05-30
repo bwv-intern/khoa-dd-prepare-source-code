@@ -5,6 +5,9 @@ namespace App\Http\Requests\User;
 use App\Http\Requests\AdminOnlyRequest;
 use App\Rules\{CheckInValueList, CheckMailRFC};
 
+/**
+ * Validate incoming ADMIN_USER_SEARCH request, both view and form submit request
+ */
 class SearchRequest extends AdminOnlyRequest
 {
     public function rules() {

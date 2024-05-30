@@ -12,6 +12,9 @@ use Illuminate\Validation\ValidationException;
 use Throwable;
 use ValueError;
 
+/**
+ * Central service for handling most complex admin requests
+ */
 class AdminService
 {
     public function __construct(protected UserRepository $userRepository) {
@@ -126,21 +129,21 @@ class AdminService
             if (count($dataValidationErrors) > 0) {
                 throw ValidationException::withMessages($dataValidationErrors);
             }
-        // catch wrong header cases: incorrect header or failing to combine header with row
+            // catch wrong header cases: incorrect header or failing to combine header with row
         } catch (WrongHeaderException $whe) {
             DB::rollBack();
             Log::error('Wrong header: ' . $whe->getMessage());
             $finalException = ValidationException::withMessages([getMessage('E008')]);
-        // catch row validation errors
+            // catch row validation errors
         } catch (ValidationException $t) {
             DB::rollBack();
             Log::error($t->getMessage());
             $finalException = $t;
-        // catch everything else
+            // catch everything else
         } catch (Throwable $t) {
             DB::rollBack();
             Log::error($t->getMessage());
-            $finalException = ValidationException::withMessages([getMessage('E014')]);;
+            $finalException = ValidationException::withMessages([getMessage('E014')]);
         } finally {
             // delete tmp file
             Log::info(File::delete($fullFilePath));
@@ -148,9 +151,8 @@ class AdminService
                 DB::rollBack();
                 throw $finalException;
             }
-            else {
-                DB::commit();
-            }
+
+            DB::commit();
         }
     }
 }

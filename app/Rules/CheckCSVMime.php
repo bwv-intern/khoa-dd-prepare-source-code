@@ -6,10 +6,13 @@ use App\Libs\ConfigUtil;
 use Illuminate\Contracts\Validation\Rule;
 use Illuminate\Http\UploadedFile;
 
+/**
+ * Check if file has a submime of one of the valid csv submimes
+ */
 class CheckCSVMime implements Rule
 {
     /**
-     * Check if file has a submime of one of the valid csv submimes
+     * Construct a new instance
      *
      * @param mixed $attribute
      * @param mixed $value
