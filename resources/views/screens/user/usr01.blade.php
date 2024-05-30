@@ -33,7 +33,9 @@
                                 <x-forms.checkbox-group :label="null"
                                     name="user_flg" :options="getList('user.user_flg')"
                                     :valueChecked="$paramSession['user_flg'] ??
-                                        (old('user_flg') ?? null)" />
+                                        (old('user_flg') ?? null)" 
+                                    data-default="true"
+                                    :classCheckbox="'check'"/>
                             </div>
                         </div>
                     </div>

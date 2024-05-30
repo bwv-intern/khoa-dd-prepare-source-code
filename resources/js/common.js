@@ -92,8 +92,19 @@ $(function () {
         var dateElement = closestForm.find('.datepicker') ? closestForm.find('.date-month') : '';
         closestForm.trigger('reset');
         closestForm.find('input:text, input:password, input:file, textarea').val('');
-        closestForm.find('.i-radio, .i-checkbox').closest('div').removeClass('checked');
-        closestForm.find('.i-radio, .i-checkbox').removeAttr('checked');
+        // check the default values for checkbox/radio and set them to said default
+        closestForm.find('.i-radio, .i-checkbox').each(function () {
+            if ($(this).data('default')) {
+                $(this).closest('div').addClass('checked');
+                $(this).addClass('checked');
+                $(this).prop('checked', true);
+            }
+            else {
+                $(this).closest('div').removeClass('checked');
+                $(this).removeAttr('checked');
+                $(this).prop('checked', false);
+            }
+        })
         closestForm.find('select').each(function () {
             var optVal = $(this).find('option:first').val();
             $(this).val(optVal);

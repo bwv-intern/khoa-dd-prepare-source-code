@@ -21,6 +21,7 @@
         :options="$options"
         :valueChecked="$valueChecked"
         :ratioBreak="$ratioBreak"
+        data-default="{{ $attributes['data-default'] }}"
         class="{{ $attributes['classCheckbox'] }}"
     />
 </div>

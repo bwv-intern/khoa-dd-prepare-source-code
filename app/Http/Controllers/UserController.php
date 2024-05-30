@@ -4,11 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Helpers\CSVHelper;
 use App\Http\Requests\User\{AddRequest, DeleteRequest, EditRequest, ExportRequest, ImportRequest, SearchRequest};
+use App\Libs\ValueUtil;
 use App\Repositories\UserRepository;
 use App\Services\AdminService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\{Request};
-use Illuminate\Support\Facades\{Route, Session};
+use Illuminate\Support\Facades\{Session};
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Throwable;
 
@@ -25,7 +26,9 @@ class UserController extends Controller
      * @param Request $request
      */
     public function viewAdminUserSearch(SearchRequest $request) {
-        $paramSession = session()->get('usr01.search') ?? [];
+        $paramSession = session()->get('usr01.search') ?? [
+            'user_flg' => ValueUtil::getValues('user.user_flg'),
+        ];
         $users = $this->userRepository->search($paramSession);
         $users = $this->pagination($users);
 
@@ -119,6 +122,7 @@ class UserController extends Controller
         $this->adminService->import($request);
 
         Session::flash('success', getMessage('I013'));
+
         return to_route('ADMIN_USER_SEARCH');
     }
 }
