@@ -1,0 +1,17 @@
+columns:
+  # actual column name: header name
+  id: user_id
+  email: email
+  name: name
+  user_flg: user_flg
+  date_of_birth: date_of_birth
+  phone: phone
+  address: address
+  del_flg: del_flg
+  created_by: created_by
+  created_at: created_at
+
+dt_formats:
+  # actual column name: format
+  date_of_birth: Y/m/d
+  created_at: Y/m/d

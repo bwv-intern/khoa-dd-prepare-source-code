@@ -56,13 +56,14 @@
     border: 6px solid rgb(151, 148, 148);
     border-color: rgb(151, 148, 148) transparent rgb(151, 148, 148) transparent;
     -webkit-animation: lds-dual-ring 1.2s linear infinite;
-            animation: lds-dual-ring 1.2s linear infinite;
+    animation: lds-dual-ring 1.2s linear infinite;
 }
 
 @-webkit-keyframes lds-dual-ring {
     0% {
         transform: rotate(0deg);
     }
+
     100% {
         transform: rotate(360deg);
     }
@@ -72,6 +73,7 @@
     0% {
         transform: rotate(0deg);
     }
+
     100% {
         transform: rotate(360deg);
     }
@@ -81,4 +83,28 @@
     .modal-dialog {
         max-width: 100% !important;
     }
+}
+
+/* span grouping an input or whatever with an i, used to keep i's positioning relative to the input
+ * when only that input (and obviously the i) occupies the span, thus dictating its sizes
+ */
+span.groupIcon {
+    position: relative;
+}
+
+/* the i in question, positioned absolute to the nearest relative element, being the span above
+ */
+span.groupIcon i {
+    position: absolute;
+    top: 50%;
+    right: 4%;
+    transform: translate(0, -50%);
+}
+
+textarea.no-resize {
+    resize: none;
+}
+
+.menu-item-active {
+    color: teal !important
 }

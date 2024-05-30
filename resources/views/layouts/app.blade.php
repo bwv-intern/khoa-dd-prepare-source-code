@@ -16,6 +16,7 @@
     <link href="{{ asset('css/lib/bootstrap.min.css') }}" rel="stylesheet" />
     <link href="{{ asset('css/lib/font-awesome/css/all.min.css') }}" rel="stylesheet" />
     <link href="{{ asset('css/adminlte.min.css') }}" rel="stylesheet" />
+    <link href="{{ asset('css/lib/jquery-ui.min.css') }}" rel="stylesheet" />
     @vite(['resources/css/common.css'], 'build')
     @stack('styles')
 </head>
@@ -24,7 +25,7 @@
     <x-partials.header />
     <x-partials.menu />
     <div class="content-wrapper">
-        <x-partials.breadcrumb />
+        <x-partials.breadcrumb :breadcrumbs="$breadcrumbs"/>
         <section class="content">
             <div class="container-fluid">
                 @if (Session::has('error'))
@@ -71,7 +72,11 @@
     <script src="{{ asset('js/lib/jquery-validation/jquery.validate.min.js') }}"></script>
     <script src="{{ asset('js/lib/jquery-validation/additional-methods.min.js') }}"></script>
     <script src="{{ asset('js/adminlte.min.js') }}"></script>
+    <script src="{{ asset('js/lib/jquery-ui.min.js') }}"></script>
+    <script src="{{ asset('js/lib/moment.js') }}"></script>
     @vite(['resources/js/common.js', 'resources/js/lib/jquery-validation/additional-setting.js'], 'build')
+    <script defer src="{{ asset('js/lib/custom-rules.js')}}"></script>
+    <script defer src="{{ asset('js/lib/custom-messages.js')}}"></script>
     @stack('scripts')
 </body>
 

@@ -1,6 +1,12 @@
-user_flag:
-  1: ADMIN
-  2: DIRECTOR
-  3: GROUP_LEADER
-  4: LEADER
-  5: MEMBER
+user_flg:
+  0: Admin|ADMIN
+  1: User|USER
+  2: Support|SUPPORT
+  # 0: アドミン|ADMIN
+  # 1: ユーザー|USER
+  # 2: サポート|SUPPORT
+  # 1: ADMIN
+  # 2: DIRECTOR
+  # 3: GROUP_LEADER
+  # 4: LEADER
+  # 5: MEMBER

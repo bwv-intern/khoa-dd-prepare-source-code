@@ -1,0 +1,9 @@
+# list of predefined custom name to label mappings
+name_label_mappings:
+  email: Email
+  name: Full name
+  password: Password
+  phone: Phone
+  user_flg: User flag
+  repeat_password: Re-password
+  date_of_birth: Date of birth

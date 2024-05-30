@@ -6,7 +6,7 @@ use Illuminate\Database\Schema\Blueprint;
 
 trait DatabaseCommonTrait {
     public function commonColumns(Blueprint $table) {
-        $table->tinyInteger('del_flg')->default(0);
+        $table->tinyInteger('del_flg')->nullable(false)->default(0);
         $table->datetime('created_at');
         $table->unsignedBigInteger('created_by');
         $table->datetime('updated_at')->nullable();

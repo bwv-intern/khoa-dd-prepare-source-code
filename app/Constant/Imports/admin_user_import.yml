@@ -1,0 +1,7 @@
+# column name in header: validation key in the form of table.column
+user_id: common.id
+email: user.email
+password: user.password
+user_flg: user.user_flg
+date_of_birth: user.date_of_birth
+name: user.name

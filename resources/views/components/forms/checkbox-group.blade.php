@@ -9,7 +9,7 @@
     'ratioBreak' => null,
 ])
 
-<div class="input-group">
+<div class="input-group justify-content-around">
     @if (isset($label))
         <x-forms.label :label="$label" :isRequired="$isRequired" class="{{ 'col-2' . $attributes['classLabel'] }}" />
     @endif
@@ -21,6 +21,7 @@
         :options="$options"
         :valueChecked="$valueChecked"
         :ratioBreak="$ratioBreak"
+        data-default="{{ $attributes['data-default'] }}"
         class="{{ $attributes['classCheckbox'] }}"
     />
 </div>

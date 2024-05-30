@@ -36,9 +36,9 @@ class AuthController extends Controller
         $credentials = $request->only('email', 'password');
         if ($this->authService->handleLogin($credentials)) {
             session()->regenerate();
-            return redirect()->intended(route('top.index'));
+            return redirect()->intended(route('ADMIN_TOP'));
         } else {
-            return redirect()->back()->withInput()->withErrors(ConfigUtil::getMessage('ECL019'));
+            return redirect()->back()->withInput()->withErrors(ConfigUtil::getMessage('E010'));
         }
     }
 

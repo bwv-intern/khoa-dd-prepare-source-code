@@ -39,8 +39,16 @@ $(function () {
     function showLoading(isShow = true) {
         if (isShow) {
             $('#loading').show();
+            // disable form submit
+            $(":enabled[type=submit]").prop("disabled", true).addClass("to-enable");
+            // force lose focus
+            $(":focus").blur();
+            // could also force untabbable
+            // $("*").prop("tabindex", -1);
         } else {
             $('#loading').hide();
+            // reenable whatever was disabled
+            $(".to-enable").prop("disabled", false).removeClass("to-enable");
         }
     }
     _common.showLoading = showLoading;
@@ -81,11 +89,22 @@ $(function () {
     $('.btn-clear-search').click(function () {
         var closestForm = $(this).closest('form');
         var radioElement = closestForm.find('.i-radio');
-        var dateElement = closestForm.find('.datepicker') ? closestForm.find('.date-month'): '';
+        var dateElement = closestForm.find('.datepicker') ? closestForm.find('.date-month') : '';
         closestForm.trigger('reset');
         closestForm.find('input:text, input:password, input:file, textarea').val('');
-        closestForm.find('.i-radio, .i-checkbox').closest('div').removeClass('checked');
-        closestForm.find('.i-radio, .i-checkbox').removeAttr('checked');
+        // check the default values for checkbox/radio and set them to said default
+        closestForm.find('.i-radio, .i-checkbox').each(function () {
+            if ($(this).data('default')) {
+                $(this).closest('div').addClass('checked');
+                $(this).addClass('checked');
+                $(this).prop('checked', true);
+            }
+            else {
+                $(this).closest('div').removeClass('checked');
+                $(this).removeAttr('checked');
+                $(this).prop('checked', false);
+            }
+        })
         closestForm.find('select').each(function () {
             var optVal = $(this).find('option:first').val();
             $(this).val(optVal);
@@ -111,6 +130,11 @@ $(function () {
                 $(this).val('');
             }
         });
+        // also clear import file input
+        $("input#import-file").val("")
+        $("#import-error-box").html("");
+
+        showLoading(true);
 
         $('form').valid();
         $.ajax({
@@ -123,7 +147,8 @@ $(function () {
                 screen: $(this).data('screen'),
             },
             dataType: 'json',
-            success: function (response) {}
+            success: function (response) { },
+            complete: function () { showLoading(false); },
         });
     });
 });
