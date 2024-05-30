@@ -50,11 +50,13 @@ Route::middleware(['auth', 'authorize_user_flg:admin'])->prefix('admin')->name('
 
     Route::get('/user/add', [UserController::class, 'viewAdminUserAdd'])->name('USER_ADD')
         ->middleware(['nocache']);
-    Route::post('/user/submit-add', [UserController::class, 'submitAdminUserAdd'])->name('USER_ADD_SUBMIT')
+    Route::post('/user/add-submit', [UserController::class, 'submitAdminUserAdd'])->name('USER_ADD_SUBMIT')
         ->middleware(['nocache']);
 
     Route::get('/user/edit/{id}', [UserController::class, 'viewAdminUserEdit'])->name('USER_EDIT')
         ->middleware(['nocache']);
-    Route::post('/user/submit-edit/{id}', [UserController::class, 'submitAdminUserEdit'])->name('USER_EDIT_SUBMIT')
+    Route::post('/user/edit-submit/{id}', [UserController::class, 'submitAdminUserEdit'])->name('USER_EDIT_SUBMIT')
         ->middleware(['nocache']);
+
+    Route::post('/user-import', [UserController::class, 'submitAdminUserImport'])->name('USER_IMPORT_SUBMIT');
 });

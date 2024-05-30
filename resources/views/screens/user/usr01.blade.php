@@ -43,7 +43,7 @@
                         <x-forms.text-group label="Date of birth"
                             name="date_of_birth" :value="$paramSession['date_of_birth'] ??
                                 (old('date_of_birth') ?? null)"
-                            placeholder="yyyy/mm/dd" icon="fas fa-calendar" />
+                            placeholder="dd/mm/yyyy" icon="fas fa-calendar" />
                     </div>
                     <div class="col-6">
                         <x-forms.text-group label="Phone" name="phone"
@@ -56,11 +56,24 @@
                     <x-button.clear screen="usr01" label="Clear" />
                     <x-button.link label="Export" type="button"
                         to="{{ route('ADMIN_USER_EXPORT') }}" />
-                    <x-button.base label="Import" type="button" />
+                    <x-button.base id="import-btn" label="Import" type="button" />
                 </div>
+                <div class="text-center" id="import-error-box"></div>
             </div>
         </div>
     </form>
+    <div hidden>
+        <form id="admin-user-import-form" action="{{ route('ADMIN_USER_IMPORT_SUBMIT') }}" method="post"
+            enctype="multipart/form-data">
+            @csrf
+            <label for="Import file">Import user from .csv</label>
+            <span>
+                <input type="file" name="import_file" data-label="Import file" id="import-file" accept="text/csv">
+            </span>
+            <div class="errBox"></div>
+            <input type="submit" value="Import">
+        </form>
+    </div>
     <div class="card">
         @if ($users->isNotEmpty())
             <div class="card-body">
@@ -86,6 +99,7 @@
                                             to="{{ route('ADMIN_USER_EDIT', ['id' => $user->id]) }}"
                                             label="Edit" />
                                         <x-button.base
+                                            type="button"
                                             class="btn btn-danger delete-user-btn"
                                             label="Delete"
                                             data-user-id="{{ $user->id }}"

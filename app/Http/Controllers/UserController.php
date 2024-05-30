@@ -3,8 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Helpers\CSVHelper;
-use App\Http\Requests\User\{AddRequest, DeleteRequest, EditRequest, SearchRequest};
+use App\Http\Requests\User\{AddRequest, DeleteRequest, EditRequest, ImportRequest, SearchRequest};
 use App\Repositories\UserRepository;
+use App\Services\AdminService;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\{Request};
 use Illuminate\Support\Facades\{Session};
@@ -15,7 +16,7 @@ class UserController extends Controller
 {
     protected UserRepository $userRepository;
 
-    public function __construct(UserRepository $userRepository) {
+    public function __construct(protected AdminService $adminService, UserRepository $userRepository) {
         $this->userRepository = $userRepository;
     }
 
@@ -112,5 +113,12 @@ class UserController extends Controller
         }
 
         return redirect()->back()->withInput()->withErrors(getMessage('E014'));
+    }
+
+    public function submitAdminUserImport(ImportRequest $request) {
+        $this->adminService->import($request);
+
+        Session::flash('success', getMessage('I013'));
+        return to_route('ADMIN_USER_SEARCH');
     }
 }

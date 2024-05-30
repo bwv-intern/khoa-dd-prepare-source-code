@@ -4,7 +4,8 @@ namespace App\Extensions\Validation;
 
 use App\Libs\ConfigUtil;
 use Illuminate\Contracts\Translation\Translator;
-use Illuminate\Support\{Str};
+use Illuminate\Http\UploadedFile;
+use Illuminate\Support\{Number, Str};
 use Illuminate\Validation\Validator;
 
 class SpecValidator extends Validator
@@ -57,7 +58,7 @@ class SpecValidator extends Validator
         return [
             'max' => function ($message, $attribute, $rule, $parameters, Validator $validator) {
                 return str_replace([':max', ':size'], [
-                    $parameters[0],
+                    ($validator->getData()[$attribute] instanceof UploadedFile)? str_replace(' ', '', Number::fileSize(intval($parameters[0]) * 1024)) : $parameters[0],
                     getSizeForValidation($validator->getData()[$attribute])], $message);
             },
             'max_digits' => function ($message, $attribute, $rule, $parameters, Validator $validator) {
@@ -67,7 +68,7 @@ class SpecValidator extends Validator
             },
             'min' => function ($message, $attribute, $rule, $parameters, Validator $validator) {
                 return str_replace([':min', ':size'], [
-                    $parameters[0],
+                    ($validator->getData()[$attribute] instanceof UploadedFile)? str_replace(' ', '', Number::fileSize(intval($parameters[0]) * 1024)) : $parameters[0],
                     getSizeForValidation($validator->getData()[$attribute])], $message);
             },
         ];

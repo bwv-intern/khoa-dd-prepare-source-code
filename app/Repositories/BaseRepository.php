@@ -51,6 +51,32 @@ abstract class BaseRepository
     }
 
     /**
+     * Check if an instance of a model exists, by $columnName
+     *
+     * @param mixed $value
+     * @param string $columnName
+     * @return bool
+     */
+    public function has(mixed $value, string $columnName = 'id') {
+        return $this->model->where($columnName, $value)->first() !== null;
+    }
+
+    /**
+     * Check if other instances of a model have an existing instance, by $columnName
+     *
+     * @param mixed $value
+     * @param string $columnName
+     * @param int $excludeId
+     * @return bool
+     */
+    public function hasOther(mixed $value, string $columnName, int $excludeId) {
+        return $this->model->where([
+            ['id', '!=', $excludeId],
+            [$columnName, $value],
+        ])->first() !== null;
+    }
+
+    /**
      * Insert or update record if id exist, return true if success and false if not
      *
      * @param int|null $id

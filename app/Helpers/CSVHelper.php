@@ -2,6 +2,7 @@
 
 namespace App\Helpers;
 
+use App\Exceptions\WrongHeaderException;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Facades\{File, Log};
@@ -36,7 +37,7 @@ class CSVHelper
         $firstRow = fgetcsv($fileHandle);
 
         if (array_diff_assoc($header, $firstRow)) {
-            throw new Exception('Wrong header');
+            throw new WrongHeaderException('Wrong header');
         }
 
         $lineNumber = 0;
@@ -54,6 +55,7 @@ class CSVHelper
      * @param array $header
      * @param array $data
      * @param mixed $rows
+     * @param string $exportType
      *
      * @return bool
      */
@@ -78,8 +80,7 @@ class CSVHelper
                 foreach ($columns as $fieldName => $exportHeaderName) {
                     $newRow[$fieldName] = $row[$fieldName];
                 }
-                foreach ($formats as $field => $format)
-                {
+                foreach ($formats as $field => $format) {
                     $newRow[$field] = Carbon::parse($newRow[$field])->format($format);
                 }
                 fputs($file, static::betterRowFormatter($newRow) . "\n");
@@ -104,10 +105,6 @@ class CSVHelper
         return implode(',', $row);
     }
 
-    public static function getPath() {
-        return __DIR__ . '/../' . 'Constant/' . 'Exports/';
-    }
-
     public static function getExportConfigs(string $exportType) {
         global $cache;
 
@@ -115,10 +112,71 @@ class CSVHelper
             $cache = [];
         }
 
-        if (!isset($cache[$exportType])) {
-            $filePath = static::getPath() . $exportType . '.yml';
+        if (! isset($cache[$exportType])) {
+            $filePath = static::getExportConfigPath() . $exportType . '.yml';
             $cache[$exportType] = Yaml::parseFile($filePath);
         }
+
         return $cache[$exportType];
+    }
+
+    public static function getImportValidationRules(string $importType) {
+        global $importRuleCache;
+
+        if (! isset($importRuleCache)) {
+            $importRuleCache = [];
+        }
+
+        if (! isset($importRuleCache[$importType])) {
+            $intermediary = static::getImportConfigsRaw($importType);
+            foreach ($intermediary as $headerColumn => $validationKey) {
+                $intermediary[$headerColumn] = getValidationRule($validationKey, false);
+            }
+            $importRuleCache[$importType] = $intermediary;
+        }
+
+        return $importRuleCache[$importType];
+    }
+
+    public static function getImportMappings(string $importType) {
+        global $importMapCache;
+
+        if (! isset($importMapCache)) {
+            $importMapCache = [];
+        }
+
+        if (! isset($importMapCache[$importType])) {
+            $intermediary = static::getImportConfigsRaw($importType);
+            foreach ($intermediary as $headerColumn => $validationKey) {
+                $keyParts = explode('.', $validationKey);
+                $intermediary[$headerColumn] = end($keyParts);
+            }
+            $importMapCache[$importType] = $intermediary;
+        }
+
+        return $importMapCache[$importType];
+    }
+
+    private static function getExportConfigPath() {
+        return __DIR__ . '/../' . 'Constant/' . 'Exports/';
+    }
+
+    private static function getImportConfigPath() {
+        return __DIR__ . '/../' . 'Constant/' . 'Imports/';
+    }
+
+    private static function getImportConfigsRaw(string $importType) {
+        global $importCache;
+
+        if (! isset($importCache)) {
+            $importCache = [];
+        }
+
+        if (! isset($importCache[$importType])) {
+            $filePath = static::getImportConfigPath() . $importType . '.yml';
+            $importCache[$importType] = Yaml::parseFile($filePath);
+        }
+
+        return $importCache[$importType];
     }
 }

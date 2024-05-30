@@ -119,6 +119,9 @@ $(function () {
                 $(this).val('');
             }
         });
+        // also clear import file input
+        $("input#import-file").val("")
+        $("#import-error-box").html("");
 
         showLoading(true);
 

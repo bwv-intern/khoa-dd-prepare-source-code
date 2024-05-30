@@ -24,7 +24,7 @@ class LoginRequest extends FormRequest
     public function rules() {
         return [
             'email' => ['required', new CheckMailRFC()],
-            'password' => getValidationRule('password'),
+            'password' => getValidationRule('user.password'),
         ];
     }
 }
